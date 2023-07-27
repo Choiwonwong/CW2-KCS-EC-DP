@@ -1,0 +1,11 @@
+test1-job:
+  only:
+  - master
+  tags:
+  - web-server
+  
+  script:
+  - echo "WebServer CI Start"
+  - docker build -t $WEB .
+  - docker push $WEB
+  - ssh manager docker service create --name web -p 80:80 --replicas 4 $WEB 
