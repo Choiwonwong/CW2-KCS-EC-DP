@@ -1,0 +1,55 @@
+{% extends "home2.html" %}
+
+{% block title %}
+OTA List
+{% endblock %}
+
+{% block content %}
+<main class="container">
+    <hr>
+    <section class="container-fluid">
+        <form method="post">
+            <div class="col-auto">
+                <div class="input-group mb-3">
+                    <input aria-describedby="button-addon2" aria-label="Add an OTA" class="form-control" name="title"
+                        placeholder="OTA Title" type="text" value="{{ title }}" />
+                    <input aria-describedby="button-addon2" aria-label="Add an OTA" class="form-control"
+                        name="authorName" placeholder="Author Name" type="text" value="{{ authorName }}" />
+                    <input aria-describedby="button-addon2" aria-label="Add an OTA" class="form-control"
+                        name="storeName" placeholder="Store Name" type="text" value="{{ storeName }}" />
+                    <button class="btn btn-outline-primary" data-mdb-ripple-color="dark" id="button-addon2"
+                        type="submit">
+                        Add OTA
+                    </button>
+                </div>
+            </div>
+        </form>
+    </section>
+    {% if otas %}
+    <section class="container-fluid">
+        <h2 align="center">OTA List</h2>
+        <br>
+        <div class="row">
+            {% for ota in otas %}
+            <div class="col-md-6">
+                <div class="card ota-card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ ota.title }}</h4>
+                        <p class="card-text">{{ ota.otaDescription }}</p>
+                        <p class="card-text">
+                            <strong>Author: </strong>{{ ota.authorName }} |
+                            <strong>Store: </strong>{{ ota.storeName }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% else %}
+    <section class="container-fluid">
+        <h2 align="center">No OTAs found.</h2>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}
