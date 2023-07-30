@@ -15,7 +15,6 @@ networks:
 services:
   mongodb:
     image: mongo
-    restart: always
     ports:
       - 27017:27017
     volumes:
@@ -29,7 +28,6 @@ services:
         target: /run/secrets/mongodb_root_username
       - source: mongodb_root_password
         target: /run/secrets/mongodb_root_password
-        mode: 0400
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -42,9 +40,10 @@ services:
     ports:
       - "8888:8888"
     environment:
-      - DATABASE_URL=mongodb://root:$$(cat /run/secrets/mongodb_root_password)@mongodb:27017
+      - DATABASE_URL=mongodb://dummy_url
     secrets:
-      - mongodb_root_password
+      - source: mongodb_root_password
+        target: MONGODB_ROOT_PASSWORD
     deploy:
       placement:
         constraints: [node.role == worker]
@@ -60,4 +59,3 @@ volumes:
       type: nfs
       o: addr=192.168.1.99,vers=4.2
       device: ":/web/mongodb"
-

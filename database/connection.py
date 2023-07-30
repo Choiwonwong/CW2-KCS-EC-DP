@@ -1,20 +1,19 @@
 from typing import Any, List, Optional
-
 from beanie import init_beanie, PydanticObjectId 
 from models.otas import OTA
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseSettings
+import os
 
 class Settings(BaseSettings):
     DATABASE_URL: Optional[str] = None
     DATABASE_NAME: Optional[str] = "webdb"
 
     async def initialize_database(self):
+        MONGODB_ROOT_PASSWORD = open("/run/secrets/mongodb_root_password", "r").read().strip()
+	DATABASE_URL = "mongodb://root:{}@mongodb:27017".format(MONGODB_ROOT_PASSWORD)
         client = AsyncIOMotorClient(self.DATABASE_URL)
         await init_beanie(database=client[self.DATABASE_NAME], document_models=[OTA])
-
-    class Config:
-        env_file = ".env"
 
 class Database:
     def __init__(self, model):
