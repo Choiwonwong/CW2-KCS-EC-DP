@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>오늘의 테이블 추가하기</title>
+    <!-- Add your CSS stylesheets here to improve the appearance -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Add your custom styles here */
+        body {
+            padding-top: 20px;
+        }
+
+        .ota-card {
+            width: 80%;
+            /* Set card width to 80% */
+            margin: 0 auto;
+            /* Center the card */
+            margin-bottom: 20px;
+        }
+
+        /* Add custom styles for the title and button container */
+        .ota-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            /* Relative positioning for the header */
+        }
+
+        /* Styling for the title */
+        .ota-title {
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+            padding: 10px 0;
+            color: #333;
+            /* You can change the color as per your preference */
+            width: 100%;
+            cursor: pointer;
+            /* Add cursor pointer for clickable effect */
+            text-decoration: none;
+            /* Remove underline for links */
+        }
+
+        /* Styling for the "Add OTA" button */
+        .ota-button {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        /* Styling for the input fields */
+        .form-inputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-inputs input {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        /* Styling for the subheadings */
+        .subheading {
+            font-size: 22px;
+            /* Reduced font size */
+            font-weight: bold;
+            text-align: center;
+            color: #555;
+        }
+
+        /* Card styling */
+        .ota-card .card-body {
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Divider styling */
+        .divider {
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .ota-header {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .ota-button {
+                position: static;
+                margin-top: 20px;
+                transform: none;
+            }
+        }
+
+        #current-date {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 19pt;
+            margin-bottom: 20px;
+            /* Add any additional styles as needed */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- Your header content here (if any) -->
+    </header>
+
+    <main class="container">
+        <hr>
+        <section class="container-fluid">
+            <!-- OTA Title and Add OTA Button -->
+            <div class="ota-header">
+                <a href="http://localhost:8000/" class="ota-title">오늘의 테이블</a>
+            </div>
+            <div class="divider"></div> <!-- Horizontal line to separate sections -->
+            <!-- Removed the form with input fields -->
+
+        </section>
+        <div id="current-date"></div>
+        <section class="container-fluid">
+            <div class="ota-card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="col-auto form-inputs">
+                            <h2 class="subheading">어떤 제목인가요?</h2>
+                            <input aria-describedby="button-addon2" aria-label="Add an OTA" class="form-control"
+                                name="title" placeholder="입력해주세요" type="text" value="{{ title }}" />
+
+                            <h2 class="subheading">누가 모집하나요?</h2>
+                            <input aria-describedby="button-addon2" aria-label="Add an OTA" class="form-control"
+                                name="authorName" placeholder="입력해주세요" type="text" value="{{ authorName }}" />
+
+                            <h2 class="subheading">먹을 가게는 어딘가요?</h2>
+                            <input aria-describedby="button-addon2" aria-label="Add an OTA" class="form-control"
+                                name="storeName" placeholder="입력해주세요" type="text" value="{{ storeName }}" />
+
+                            <button class="btn btn-outline-primary" data-mdb-ripple-color="dark" id="button-addon2"
+                                type="submit">
+                                추가 하기
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <!-- Your footer content here (if any) -->
+    </footer>
+
+    <!-- Add your JavaScript here to handle the "Add OTA" button click -->
+    <script>
+        // document.getElementById("add-ota-button").addEventListener("click", function () {
+
+        // });
+        function showCurrentDate() {
+            const currentDate = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = currentDate.toLocaleDateString('ko-KR', options);
+            document.getElementById('current-date').textContent = `${formattedDate}`;
+        }
+
+        // 페이지가 로드되면 showCurrentDate 함수를 호출하여 날짜를 표시합니다.
+        window.onload = showCurrentDate;
+    </script>
+
+</body>
+
+</html>
