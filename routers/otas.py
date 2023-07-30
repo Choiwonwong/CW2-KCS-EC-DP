@@ -48,7 +48,7 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 async def add_otas(
-    request: Request,  # Request 객체 추가
+    request: Request,
     title: str = Form(...),
     authorName: str = Form(...),
     storeName: str = Form(...)
@@ -56,8 +56,7 @@ async def add_otas(
     ota = OTA(title=title, authorName=authorName, storeName=storeName)
     await ota_database.save(ota)
     
-    # 현재 요청의 호스트 정보 가져오기
-    redirect_url = "http://211.183.3.150/"  # 현재 호스트의 IP로 리디렉션
+    redirect_url = "http://211.183.3.150/"
     
     return RedirectResponse(url=redirect_url)
 

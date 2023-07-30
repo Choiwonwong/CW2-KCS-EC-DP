@@ -1,17 +1,13 @@
-test1-job:
+web-CI/CD:
   only:
   - master
   tags:
   - web-server
   
   script:
-  - echo "============================"
   - echo "WebServer CI Start"
-  - echo "============================"
   - docker build -t 192.168.1.99:5000/web .
   - docker push 192.168.1.99:5000/web
-  - echo "============================"
   - echo "WebServer CD Start"
-  - echo "============================"
   - scp docker-compose.yml manager:~
   - ssh manager docker stack deploy -c docker-compose.yml OTAService
