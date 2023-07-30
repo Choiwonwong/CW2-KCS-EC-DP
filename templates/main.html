@@ -139,7 +139,7 @@
             <section class="container-fluid">
                 <!-- OTA Title and Add OTA Button -->
                 <div class="ota-header">
-                    <a href="http://{{ currentHost }}:8888/" class="ota-title">오늘의 테이블</a>
+                    <a href="http://lb/" class="ota-title">오늘의 테이블</a>
                     <button class="btn btn-outline-primary ota-button" data-mdb-ripple-color="dark" id="add-ota-button"
                         type="button">
                         테이블 추가
@@ -158,14 +158,14 @@
                     <div class="col-md-6">
                         <div class="ota-item">
                             <div class="card-title-wrapper">
-                                <a href="http://{{ currentHost }}:8888/otas/{{ ota.id }}" class="card-title">{{ ota.title }}</a>
+                                <a href="http://lb/otas/{{ ota.id }}" class="card-title">{{ ota.title }}</a>
                             </div>
                             <div class="ota-details">
                                 <strong>먹을 가게: </strong>{{ ota.storeName }}<br>
                                 <strong>모집자!: </strong>{{ ota.authorName }}
                             </div>
                             <div class="card-title-wrapper">
-                                <a href="http://{{ currentHost }}:8888/otas/{{ ota.id }}" class="card-title">모인 사람 수: {{ ota.memberCount }}</a>
+                                <a href="http://lb/otas/{{ ota.id }}" class="card-title">모인 사람 수: {{ ota.memberCount }}</a>
                             </div>
                         </div>
                     </div>
@@ -187,17 +187,16 @@
     <!-- Add your JavaScript here to handle the "Add OTA" button click -->
     <script>
 
-        const currentHost = window.location.origin; 
 
     function handleOTAClick(otaId) {
         // Send a GET request to the OTA detail page
-        fetch(`${currentHost}/otas/${otaId}`, {
+        fetch(`lb/otas/${otaId}`, {
             method: 'GET'
         })
             .then(response => {
                 if (response.ok) {
                     // If the request is successful, navigate to the OTA detail page
-                    window.location.href = `${currentHost}/otas/${otaId}`; // Use the currentHost variable
+                    window.location.href = `lb/otas/${otaId}`; // Use the currentHost variable
                 } else {
                     console.error('요청이 실패하였습니다.');
                 }
@@ -209,7 +208,7 @@
 
     document.getElementById("add-ota-button").addEventListener("click", function () {
       
-        fetch(`${currentHost}/otas/`, { // Use the currentHost variable
+        fetch(`lb/otas/`, { // Use the currentHost variable
             method: 'GET'
         })
             .then(response => {
