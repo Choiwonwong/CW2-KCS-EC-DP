@@ -178,7 +178,7 @@
             <section class="container-fluid">
                 <!-- OTA Title -->
                 <div class="ota-header">
-                    <a href="http://localhost:8000/" class="ota-title">오늘의 테이블</a>
+                    <a href="http://fastapi:8888/" class="ota-title">오늘의 테이블</a>
                 </div>
                 <!-- Add a horizontal line here -->
                 <div class="separator"></div>
@@ -245,13 +245,13 @@
             // Check if the extracted otaId is not empty
             if (otaId) {
                 // Send an HTTP DELETE request to the server
-                fetch(`http://localhost:8000/otas/${otaId}/`, {
+                fetch(`http://fastapi:8888/otas/${otaId}/`, {
                     method: 'DELETE',
                 })
                     .then((response) => {
                         // Check if the deletion is successful (status code 200)
                         if (response.ok) {
-                            window.location.href = `http://localhost:8000/`;
+                            window.location.href = `http://fastapi:8888/`;
                         } else if (response.status === 404) {
                             console.error('Resource not found:', response.status);
                         } else {
@@ -273,7 +273,7 @@
             const otaId = window.location.pathname.split('/').pop();
 
             // Send a GET request to the server
-            fetch(`http://localhost:8000/otas/${otaId}/add/`, {
+            fetch(`http://fastapi:8888/otas/${otaId}/add/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -300,7 +300,7 @@
             const otaId = window.location.pathname.split('/').pop();
 
             // Send a GET request to the server
-            fetch(`http://localhost:8000/otas/${otaId}/sub/`, {
+            fetch(`http://fastapi:8888/otas/${otaId}/sub/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

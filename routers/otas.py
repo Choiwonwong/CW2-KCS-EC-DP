@@ -51,7 +51,7 @@ async def add_otas(
 ):
      ota = OTA(title=title, authorName=authorName, storeName=storeName)
      await ota_database.save(ota)
-     return RedirectResponse(url="http://localhost:8000/")
+     return RedirectResponse(url="http://fastapi:8888/")
 
 @router.delete('/{ota_id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_ota(ota_id: PydanticObjectId):
