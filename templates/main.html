@@ -71,29 +71,30 @@
             background-color: #f8f9fa;
             border: 1px solid #ccc;
             border-radius: 5px;
-            
+
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         /* Styling for the OTA list item */
         .ota-item {
-        /* width: 85%; */
-        margin-bottom: 20px;
-        
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-        /* Background color for the list item */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* Add a subtle shadow */
-    }
+            /* width: 85%; */
+            margin-bottom: 20px;
 
-    .card-title {
-        text-decoration: none; /* Remove underline for the link */
-        font-size: 36px;        
-    }
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            /* Background color for the list item */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+        }
+
+        .card-title {
+            text-decoration: none;
+            /* Remove underline for the link */
+            font-size: 36px;
+        }
 
         /* Styling for the Author and Store */
         .ota-details {
@@ -163,9 +164,11 @@
                             <div class="ota-details">
                                 <strong>먹을 가게: </strong>{{ ota.storeName }}<br>
                                 <strong>모집자!: </strong>{{ ota.authorName }}
+                                <strong>모집자!: </strong>{{ ota.createdAt.strftime('%Y년 %m월 %d일') }}
                             </div>
                             <div class="card-title-wrapper">
-                                <a href="{{ lb }}/otas/{{ ota.id }}" class="card-title">모인 사람 수: {{ ota.memberCount }}</a>
+                                <a href="{{ lb }}/otas/{{ ota.id }}" class="card-title">모인 사람 수: {{ ota.memberCount
+                                    }}</a>
                             </div>
                         </div>
                     </div>
@@ -187,51 +190,51 @@
     <!-- Add your JavaScript here to handle the "Add OTA" button click -->
     <script>
 
-    var lb="http://211.183.3.150";
-    function handleOTAClick(otaId) {
-        // Send a GET request to the OTA detail page
-        fetch(`${lb}/otas/${otaId}`, {
-            method: 'GET'
-        })
-            .then(response => {
-                if (response.ok) {
-                    // If the request is successful, navigate to the OTA detail page
-                    window.location.href = `${lb}/otas/${otaId}`; // Use the currentHost variable
-                } else {
-                    console.error('요청이 실패하였습니다.');
-                }
+        var lb = "http://211.183.3.150";
+        function handleOTAClick(otaId) {
+            // Send a GET request to the OTA detail page
+            fetch(`${lb}/otas/${otaId}`, {
+                method: 'GET'
             })
-            .catch(error => {
-                console.error('오류가 발생하였습니다:', error);
-            });
-    }
+                .then(response => {
+                    if (response.ok) {
+                        // If the request is successful, navigate to the OTA detail page
+                        window.location.href = `${lb}/otas/${otaId}`; // Use the currentHost variable
+                    } else {
+                        console.error('요청이 실패하였습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('오류가 발생하였습니다:', error);
+                });
+        }
 
-    document.getElementById("add-ota-button").addEventListener("click", function () {
-      
-        fetch(`${lb}/otas/`, { // Use the currentHost variable
-            method: 'GET'
-        })
-            .then(response => {
-                if (response.ok) {
-                    // 요청이 성공하면, 페이지를 로드합니다.
-                    window.location.href = `${lb}/otas/`;
-                } else {
-                    console.error('요청이 실패하였습니다.');
-                }
+        document.getElementById("add-ota-button").addEventListener("click", function () {
+
+            fetch(`${lb}/otas/`, { // Use the currentHost variable
+                method: 'GET'
             })
-            .catch(error => {
-                console.error('오류가 발생하였습니다:', error);
-            });
-    });
-    
-  
+                .then(response => {
+                    if (response.ok) {
+                        // 요청이 성공하면, 페이지를 로드합니다.
+                        window.location.href = `${lb}/otas/`;
+                    } else {
+                        console.error('요청이 실패하였습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('오류가 발생하였습니다:', error);
+                });
+        });
+
+
         function showCurrentDate() {
             const currentDate = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const formattedDate = currentDate.toLocaleDateString('ko-KR', options);
             document.getElementById('current-date').textContent = `${formattedDate}`;
         }
-    
+
         // 페이지가 로드되면 showCurrentDate 함수를 호출하여 날짜를 표시합니다.
         window.onload = showCurrentDate;
     </script>
