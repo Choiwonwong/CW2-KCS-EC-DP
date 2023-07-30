@@ -7,8 +7,7 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     DATABASE_URL: Optional[str] = None
-    DATABASE_NAME: Optional[str] = "mydb"
-
+    DATABASE_NAME: Optional[str] = "webdb"
 
     async def initialize_database(self):
         client = AsyncIOMotorClient(self.DATABASE_URL)

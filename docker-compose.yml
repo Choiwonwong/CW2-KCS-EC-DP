@@ -1,0 +1,60 @@
+version: '3.8'
+
+secrets:
+  mongodb_root_username:
+    external: true
+    name: mongodb_root_username
+  mongodb_root_password:
+    external: true
+    name: mongodb_root_password
+
+networks:
+  web_network:
+    driver: overlay
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - nfs_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongodb_root_username
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongodb_root_password
+      - MONGO_INITDB_DATABASE=webdb
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+    networks:
+      - web_network
+
+  fastapi:
+    image: 192.168.1.99:5000/web:latest
+    ports:
+      - "8888:8888"
+    environment:
+      # - DATABASE_URL=mongodb://root:@mongodb:27017
+      - DATABASE_URL=mongodb://root:$(cat /run/secrets/mongodb_root_password)@mongodb:27017
+    secrets:
+      - mongodb_root_username
+      - mongodb_root_password
+    deploy:
+      placement:
+        constraints: [node.role == worker]
+      mode: global
+      endpoint_mode: dnsrr
+
+    networks:
+      - web_network
+    depends_on:
+      - mongodb
+
+volumes:
+  nfs_data:
+    driver_opts:
+      type: nfs
+      o: addr=192.168.1.99,vers=4.2
+      device: ":/web/mongodb"
