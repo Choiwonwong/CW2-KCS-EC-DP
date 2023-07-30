@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     DATABASE_NAME: Optional[str] = "webdb"
 
     async def initialize_database(self):
-        MONGODB_ROOT_PASSWORD = open("/run/secrets/mongodb_root_password", "r").read().strip()
-	DATABASE_URL = "mongodb://root:{}@mongodb:27017".format(MONGODB_ROOT_PASSWORD)
+        self.MONGODB_ROOT_PASSWORD = open("/run/secrets/mongodb_root_password", "r").read().strip()
+        self.DATABASE_URL = f"mongodb://root:{self.MONGODB_ROOT_PASSWORD}@mongodb:27017/?authSource=admin"
         client = AsyncIOMotorClient(self.DATABASE_URL)
         await init_beanie(database=client[self.DATABASE_NAME], document_models=[OTA])
 
