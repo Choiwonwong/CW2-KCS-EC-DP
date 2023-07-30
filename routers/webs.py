@@ -1,19 +1,23 @@
-from fastapi import APIRouter, HTTPException, status, Request, Depends
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
-from models.otas import OTA, OTAItem
-from routers.otas import ota_list
+from beanie import PydanticObjectId 
+from database.connection import Database
+from models.otas import OTA
 
 router = APIRouter()
+ota_database = Database(OTA)
 
 templates = Jinja2Templates(directory='templates/')
 
 @router.get('/')
 @router.post('/')
-async def retrieve_otas(request: Request):
+@router.delete('/')
+async def mainPage(request: Request):
+    otas = await ota_database.get_all()
     return templates.TemplateResponse(
         "main.html",
         {
             "request": request,
-            "otas": ota_list
+            "otas": otas
         }
     )

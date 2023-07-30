@@ -71,24 +71,33 @@
             background-color: #f8f9fa;
             border: 1px solid #ccc;
             border-radius: 5px;
+            
             padding: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         /* Styling for the OTA list item */
         .ota-item {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #fff;
-            /* Background color for the list item */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            /* Add a subtle shadow */
-        }
+        /* width: 85%; */
+        margin-bottom: 20px;
+        
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        /* Background color for the list item */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Add a subtle shadow */
+    }
+
+    .card-title {
+        text-decoration: none; /* Remove underline for the link */
+        font-size: 36px;        
+    }
 
         /* Styling for the Author and Store */
         .ota-details {
+            font-size: 24px;
             margin-top: 10px;
             color: #888;
             /* You can change the color as per your preference */
@@ -148,11 +157,15 @@
                     {% for ota in otas %}
                     <div class="col-md-6">
                         <div class="ota-item">
-                            <h4 class="card-title">{{ ota.title }}</h4>
-                            <p class="card-text">{{ ota.otaDescription }}</p>
+                            <div class="card-title-wrapper">
+                                <a href="http://localhost:8000/otas/{{ ota.id }}" class="card-title">{{ ota.title }}</a>
+                            </div>
                             <div class="ota-details">
                                 <strong>먹을 가게: </strong>{{ ota.storeName }}<br>
                                 <strong>모집자!: </strong>{{ ota.authorName }}
+                            </div>
+                            <div class="card-title-wrapper">
+                                <a href="http://localhost:8000/otas/{{ ota.id }}" class="card-title">모인 사람 수: {{ ota.memberCount }}</a>
                             </div>
                         </div>
                     </div>
@@ -173,6 +186,38 @@
 
     <!-- Add your JavaScript here to handle the "Add OTA" button click -->
     <script>
+        function handleOTAClick(otaId) {
+            // Send a GET request to the OTA detail page
+            fetch(`http://localhost:8000/otas/${otaId}`, {
+                method: 'GET'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // If the request is successful, navigate to the OTA detail page
+                        window.location.href = `http://localhost:8000/otas/${otaId}`;
+                    } else {
+                        console.error('요청이 실패하였습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('오류가 발생하였습니다:', error);
+                });
+        }
+    
+        // Attach a click event listener to the card-title-wrapper
+        const cardTitleWrappers = document.querySelectorAll('.card-title-wrapper');
+cardTitleWrappers.forEach(wrapper => {
+    const otaItem = wrapper.parentElement; // Get the parent element (ota-item)
+    const otaId = otaItem.getAttribute('data-ota-id');
+
+    wrapper.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent event propagation to parent elements
+        if (otaId) { // Check if otaId exists
+            handleOTAClick(otaId);
+        }
+    });
+});
+    
         document.getElementById("add-ota-button").addEventListener("click", function () {
             // "테이블 추가" 버튼을 눌렀을 때 백엔드 서버로 GET 요청 보내기
             fetch('http://localhost:8000/otas/', {
@@ -190,7 +235,7 @@
                     console.error('오류가 발생하였습니다:', error);
                 });
         });
-
+    
         // JavaScript를 사용하여 날짜를 표시하는 함수 추가
         function showCurrentDate() {
             const currentDate = new Date();
@@ -198,7 +243,7 @@
             const formattedDate = currentDate.toLocaleDateString('ko-KR', options);
             document.getElementById('current-date').textContent = `${formattedDate}`;
         }
-
+    
         // 페이지가 로드되면 showCurrentDate 함수를 호출하여 날짜를 표시합니다.
         window.onload = showCurrentDate;
     </script>
