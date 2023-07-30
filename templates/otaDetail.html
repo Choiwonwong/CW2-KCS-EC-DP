@@ -147,7 +147,7 @@
             <hr>
             <section class="container-fluid">
                 <div class="ota-header">
-                    <a href="http://lb/" class="ota-title">오늘의 테이블</a>
+                    <a href="http://{{ lb }}/" class="ota-title">오늘의 테이블</a>
                 </div>
                 <div class="separator"></div>
             </section>
@@ -203,6 +203,7 @@
 
         // Call showCurrentDate function when the page is loaded
         window.onload = showCurrentDate;
+	var lb = "http://211.183.3.150";
 
         // Function to handle the "Delete Table" button click
         function deleteTable() {
@@ -212,13 +213,13 @@
             // Check if the extracted otaId is not empty
             if (otaId) {
                 // Send an HTTP DELETE request to the server
-                fetch(`lb/otas/${otaId}/`, { // Use the currentHost variable
+                fetch(`${lb}/otas/${otaId}/`, { // Use the currentHost variable
                     method: 'DELETE',
                 })
                     .then((response) => {
                         // Check if the deletion is successful (status code 200)
                         if (response.ok) {
-                            window.location.href = `lb/`; // Use the currentHost variable
+                            window.location.href = `${lb}/`; // Use the currentHost variable
                         } else if (response.status === 404) {
                             console.error('Resource not found:', response.status);
                         } else {
@@ -238,7 +239,7 @@
             const otaId = window.location.pathname.split('/').pop();
 
             // Send a GET request to the server
-            fetch(`lb/otas/${otaId}/add/`, { // Use the currentHost variable
+            fetch(`${lb}/otas/${otaId}/add/`, { // Use the currentHost variable
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -264,7 +265,7 @@
             const otaId = window.location.pathname.split('/').pop();
 
             // Send a GET request to the server
-            fetch(`lb/otas/${otaId}/sub/`, { // Use the currentHost variable
+            fetch(`${lb}/otas/${otaId}/sub/`, { // Use the currentHost variable
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

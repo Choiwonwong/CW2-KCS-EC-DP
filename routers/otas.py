@@ -19,7 +19,8 @@ async def createPage(request: Request):
         "createOTA.html",
         {
             "request": request,
-            "otas": otas
+            "otas": otas,
+            "lb": "211.183.3.150"
         }
     )
 
@@ -31,7 +32,8 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
             "otaDetail.html",
             {
                 "request": request,
-                "ota": None
+                "ota": None,
+		"lb": "211.183.3.150"
             }
         )
     else:
@@ -39,7 +41,8 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
             "otaDetail.html",
             {
                 "request": request,
-                "ota": ota
+                "ota": ota,
+		"lb": "211.183.3.150"
             }
         )
 
@@ -54,7 +57,7 @@ async def add_otas(
     await ota_database.save(ota)
     
     # 현재 요청의 호스트 정보 가져오기
-    redirect_url = f"http://lb/"  # 현재 호스트의 IP로 리디렉션
+    redirect_url = "http://211.183.3.150/"  # 현재 호스트의 IP로 리디렉션
     
     return RedirectResponse(url=redirect_url)
 
