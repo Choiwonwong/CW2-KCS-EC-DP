@@ -37,9 +37,9 @@ services:
       - "8888:8888"
     environment:
       # - DATABASE_URL=mongodb://root:@mongodb:27017
-      - DATABASE_URL=mongodb://root:$(cat /run/secrets/mongodb_root_password)@mongodb:27017
+      - DATABASE_URL=mongodb://root:$$(cat /run/secrets/mongodb_root_password)@mongodb:27017
     secrets:
-      - mongodb_root_username
+      #- mongodb_root_username
       - mongodb_root_password
     deploy:
       placement:
