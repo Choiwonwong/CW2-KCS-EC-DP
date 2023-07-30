@@ -169,9 +169,9 @@
                         <p class="ota-content">{{ ota.authorName }}</p>
 			<div class="item-divider"></div>
 			<div class="label">생성 날짜!</div>
-			<p class="ota-content" id="creation-date"></p>
+			<p class="ota-content" id="creation-date">{{ ota.createdAt.strftime('%Y년 %m월 %d일') }}</p>
 			<div class="label">생성 시간!</div>
-			<p class="ota-content" id="creation-time"></p>
+			<p class="ota-content" id="creation-time">{{ ota.createdAt.strftime('%H시 %M분') }}</p>
                         <div class="item-divider"></div>
                         <div class="btn-group" style="display: flex; justify-content: center;">
                             <button type="button" class="btn btn-add" onclick="addCount()">나도 먹을래~</button>
@@ -204,14 +204,6 @@
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const formattedDate = currentDate.toLocaleDateString('ko-KR', options);
             document.getElementById('current-date').textContent = `${formattedDate}`;
-
-	    const creationDateTime = new Date("{{ ota.createdAt }}");
-	    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-	    const optionsTime = { hour: 'numeric', minute: 'numeric' };
-	    const formattedDate = creationDateTime.toLocaleDateString('ko-KR', optionsDate);
-	    const formattedTime = creationDateTime.toLocaleTimeString('ko-KR', optionsTime);
-	    document.getElementById('creation-date').textContent = formattedDate;
-	    document.getElementById('creation-time').textContent = formattedTime;
         }
 
         // Call showCurrentDate function when the page is loaded
