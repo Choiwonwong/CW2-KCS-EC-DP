@@ -20,7 +20,7 @@ async def createPage(request: Request):
         {
             "request": request,
             "otas": otas,
-            "lb": "211.183.3.150"
+	    "lb": "http://211.183.3.150"
         }
     )
 
@@ -33,7 +33,7 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
             {
                 "request": request,
                 "ota": None,
-		"lb": "211.183.3.150"
+	        "lb": "http://211.183.3.150"
             }
         )
     else:
@@ -42,7 +42,7 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
             {
                 "request": request,
                 "ota": ota,
-		"lb": "211.183.3.150"
+ 		"lb": "http://211.183.3.150"
             }
         )
 

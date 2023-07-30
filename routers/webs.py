@@ -18,6 +18,7 @@ async def mainPage(request: Request):
         "main.html",
         {
             "request": request,
-            "otas": otas
+            "otas": otas,
+            "lb": "http://211.183.3.150"
         }
     )
