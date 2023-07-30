@@ -43,7 +43,7 @@ services:
       - DATABASE_URL=mongodb://dummy_url
     secrets:
       - source: mongodb_root_password
-        target: MONGODB_ROOT_PASSWORD
+        target: /run/secrets/mongodb_root_password
     deploy:
       placement:
         constraints: [node.role == worker]
