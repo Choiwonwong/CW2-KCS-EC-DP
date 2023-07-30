@@ -1,10 +1,9 @@
-from fastapi import APIRouter, Body, HTTPException, status, Request, Form
+from fastapi import APIRouter, HTTPException, status, Request, Form
 from fastapi.responses import RedirectResponse
 from beanie import PydanticObjectId
 from fastapi.templating import Jinja2Templates
 from database.connection import Database
 from models.otas import OTA
-
 
 router = APIRouter(
     tags=['OTAs']
@@ -44,11 +43,6 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
             }
         )
 
-# @router.post('/', status_code=status.HTTP_201_CREATED)
-# async def add_otas(ota: OTA = Body(...)):
-#     await ota_database.save(ota)
-#     return RedirectResponse(url="http://localhost:8000/")
-
 @router.post('/', status_code=status.HTTP_201_CREATED)
 async def add_otas(
     title: str = Form(...),
@@ -59,23 +53,23 @@ async def add_otas(
      await ota_database.save(ota)
      return RedirectResponse(url="http://localhost:8000/")
 
-@router.delete('/{ota_id}', status_code=status.HTTP_202_ACCEPTED)
+@router.delete('/{ota_id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_ota(ota_id: PydanticObjectId):
-    result = ota_database.delete(ota_id)
-    if not result:
+    success = await ota_database.delete(ota_id)
+    if not success:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return None
-    
-
 
 @router.get('/{ota_id}/add', status_code=status.HTTP_202_ACCEPTED)
-async def add_count(ota_id: str):
+async def add_count(ota_id: PydanticObjectId):
     ota = await ota_database.get(ota_id)
     if not ota:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     ota.memberCount += 1
-    await ota_database.save(ota)
+    await ota.save()
     return None
+
+
 
 @router.get('/{ota_id}/sub', status_code=status.HTTP_202_ACCEPTED)
 async def sub_count(ota_id: PydanticObjectId):
@@ -84,5 +78,5 @@ async def sub_count(ota_id: PydanticObjectId):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     if ota.memberCount > 1:
         ota.memberCount -= 1
-        await ota_database.save(ota)
+        await ota.save()
     return None

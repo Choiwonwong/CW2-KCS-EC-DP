@@ -46,8 +46,10 @@
             border-radius: 10px;
             padding: 20px;
             width: 80%;
-            white-space: nowrap; /* Prevent elements from wrapping */
-            overflow-x: auto; /* Add a horizontal scrollbar when necessary */
+            white-space: nowrap;
+            /* Prevent elements from wrapping */
+            overflow-x: auto;
+            /* Add a horizontal scrollbar when necessary */
         }
 
         /* Styling for the OTA list item */
@@ -100,18 +102,20 @@
 
         /* Style for the card title inside ota-card */
         .card-title-inside {
-        font-size: 34pt;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 10px;
-        text-align: center; /* Align the card title to center */
-    }
+            font-size: 34pt;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            /* Align the card title to center */
+        }
 
         /* Style for the label inside ota-details */
         .label {
             font-weight: bold;
             text-align: center;
-            color: #333; /* Change the label color to be more visible */
+            color: #333;
+            /* Change the label color to be more visible */
             margin-bottom: 15px;
             margin-top: 15px;
             font-size: 30px;
@@ -132,32 +136,34 @@
             margin-bottom: 25px;
             font-size: 24px;
         }
+
         .btn-add {
-        background-color: #007bff;
-        color: #fff;
-        width: 40%;
-        
-    }
-    .btn-sub {
-        background-color: green;
-        color: #fff;
-        width: 40%;
-        
-    }
+            background-color: #007bff;
+            color: #fff;
+            width: 40%;
 
-    /* Style for .btn-del button */
-    .btn-del {
-        background-color: #dc3545;
-        color: #fff;
-        width: 20%;
-        /* Add any additional styles for the button as needed */
-    }
-    .btn-del-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 25px;
-    }
+        }
 
+        .btn-sub {
+            background-color: green;
+            color: #fff;
+            width: 40%;
+
+        }
+
+        /* Style for .btn-del button */
+        .btn-del {
+            background-color: #dc3545;
+            color: #fff;
+            width: 20%;
+            /* Add any additional styles for the button as needed */
+        }
+
+        .btn-del-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
     </style>
 </head>
 
@@ -206,9 +212,9 @@
                 </div>
             </section>
             {% else %}
-                <section class="container-fluid ota-container">
-                    <h2 align="center">등록된 테이블이 없어요!<br><br> 상단의 "오늘의 테이블"을 클릭해주세요!</h2>
-                </section>
+            <section class="container-fluid ota-container">
+                <h2 align="center">등록된 테이블이 없어요!<br><br> 상단의 "오늘의 테이블"을 클릭해주세요!</h2>
+            </section>
             {% endif %}
             <div class="separator"></div>
         </main>
@@ -227,88 +233,94 @@
             const formattedDate = currentDate.toLocaleDateString('ko-KR', options);
             document.getElementById('current-date').textContent = `${formattedDate}`;
         }
-    
+
         // Call showCurrentDate function when the page is loaded
         window.onload = showCurrentDate;
-    
+
         // Function to handle the "Delete Table" button click
         function deleteTable() {
-        // Extract the ota_id from the current URL
-        const otaId = window.location.pathname.split('/').pop();
+            // Extract the ota_id from the current URL
+            const otaId = window.location.pathname.split('/').pop();
 
-        // Send an HTTP DELETE request to the server
-        fetch(`http://localhost:8000/otas/${otaId}/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => {
-            // Check if the deletion is successful (status code 200)
-            if (response.ok) {
-                window.location.href = `http://localhost:8000/`;
+            // Check if the extracted otaId is not empty
+            if (otaId) {
+                // Send an HTTP DELETE request to the server
+                fetch(`http://localhost:8000/otas/${otaId}/`, {
+                    method: 'DELETE',
+                })
+                    .then((response) => {
+                        // Check if the deletion is successful (status code 200)
+                        if (response.ok) {
+                            window.location.href = `http://localhost:8000/`;
+                        } else if (response.status === 404) {
+                            console.error('Resource not found:', response.status);
+                        } else {
+                            console.error('Error:', response.status);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
             } else {
-                // Handle the error case, if needed
-                console.error('Error:', response.status);
+                console.error('Invalid ota_id:', otaId);
             }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
+        }
 
-    function addCount() {
-        // Extract the ota_id from the current URL
-        const otaId = window.location.pathname.split('/').pop();
 
-        // Send a GET request to the server
-        fetch(`http://localhost:8000/otas/${otaId}/add/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => {
-            // Check if the request is successful (status code 200)
-            if (response.ok) {
-                // Refresh the page to update the content
-                window.location.reload();
-            } else {
-                // Handle the error case, if needed
-                console.error('Error:', response.status);
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
 
-    // Function to handle the "난 딴거!" button click
-    function subCount() {
-        // Extract the ota_id from the current URL
-        const otaId = window.location.pathname.split('/').pop();
+        function addCount() {
+            // Extract the ota_id from the current URL
+            const otaId = window.location.pathname.split('/').pop();
 
-        // Send a GET request to the server
-        fetch(`http://localhost:8000/otas/${otaId}/sub/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => {
-            // Check if the request is successful (status code 200)
-            if (response.ok) {
-                // Refresh the page to update the content
-                window.location.reload();
-            } else {
-                // Handle the error case, if needed
-                console.error('Error:', response.status);
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
+            // Send a GET request to the server
+            fetch(`http://localhost:8000/otas/${otaId}/add/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => {
+                    // Check if the request is successful (status code 200)
+                    if (response.ok) {
+                        // Refresh the page to update the content
+                        window.location.reload();
+                    } else {
+                        // Handle the error case, if needed
+                        console.error('Error:', response.status);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // Function to handle the "난 딴거!" button click
+        function subCount() {
+            // Extract the ota_id from the current URL
+            const otaId = window.location.pathname.split('/').pop();
+
+            // Send a GET request to the server
+            fetch(`http://localhost:8000/otas/${otaId}/sub/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then((response) => {
+                    // Check if the request is successful (status code 200)
+                    if (response.ok) {
+                        // Refresh the page to update the content
+                        window.location.reload();
+                    } else {
+                        // Handle the error case, if needed
+                        console.error('Error:', response.status);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
     </script>
 </body>
+
 </html>

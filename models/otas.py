@@ -1,11 +1,10 @@
-from pydantic import BaseModel
+from pydantic import Field
 from fastapi import Form
 from datetime import datetime
-from beanie import Document, PydanticObjectId 
-
+from beanie import Document, PydanticObjectId
 
 class OTA(Document):
-    id: PydanticObjectId 
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId, alias="_id")
     createdAt: datetime = datetime.now()
     title: str
     authorName: str
@@ -23,3 +22,4 @@ class OTA(Document):
                    storeName=storeName)
     class Settings:
         name = "otas"
+
