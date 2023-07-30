@@ -18,13 +18,10 @@
 
         .ota-card {
             width: 80%;
-            /* Set card width to 80% */
             margin: 0 auto;
-            /* Center the card */
             margin-bottom: 20px;
         }
 
-        /* Styling for the title */
         .ota-title {
             font-size: 36px;
             font-weight: bold;
@@ -32,54 +29,39 @@
             margin: 0;
             padding: 10px 0;
             color: #333;
-            /* You can change the color as per your preference */
             width: 100%;
             cursor: pointer;
-            /* Add cursor pointer for clickable effect */
             text-decoration: none;
-            /* Remove underline for links */
         }
 
-        /* Additional styling for the container */
         .ota-container {
             border: 2px solid #ccc;
             border-radius: 10px;
             padding: 20px;
             width: 80%;
             white-space: nowrap;
-            /* Prevent elements from wrapping */
             overflow-x: auto;
-            /* Add a horizontal scrollbar when necessary */
         }
 
-        /* Styling for the OTA list item */
         .ota-item {
             margin-bottom: 20px;
             padding: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #fff;
-            /* Background color for the list item */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            /* Add a subtle shadow */
             width: 75%;
-            /* Set width to 60% of the parent card */
             margin: 0 auto;
-            /* Center the ota-item */
         }
 
-        /* Styling for the Author and Store */
         .ota-details {
             margin-top: 10px;
             color: #888;
-            /* You can change the color as per your preference */
         }
 
-        /* Responsive layout */
         @media (max-width: 768px) {
             .ota-card {
                 width: 80%;
-                /* Adjust card width to 100% for small screens */
             }
         }
 
@@ -89,10 +71,8 @@
             align-items: center;
             font-size: 19pt;
             margin-bottom: 20px;
-            /* Add any additional styles as needed */
         }
 
-        /* Add a horizontal line between "오늘의 테이블" and "current-date" */
         .separator {
             width: 100%;
             height: 1px;
@@ -100,28 +80,23 @@
             margin: 18px 0;
         }
 
-        /* Style for the card title inside ota-card */
         .card-title-inside {
             font-size: 34pt;
             font-weight: bold;
             color: #333;
             margin-bottom: 10px;
             text-align: center;
-            /* Align the card title to center */
         }
 
-        /* Style for the label inside ota-details */
         .label {
             font-weight: bold;
             text-align: center;
             color: #333;
-            /* Change the label color to be more visible */
             margin-bottom: 15px;
             margin-top: 15px;
             font-size: 30px;
         }
 
-        /* Add horizontal line between ota-item elements */
         .item-divider {
             width: 100%;
             height: 1px;
@@ -129,7 +104,6 @@
             margin: 10px 0;
         }
 
-        /* Style for the content inside ota-item */
         .ota-content {
             text-align: center;
             margin-left: 10px;
@@ -141,22 +115,18 @@
             background-color: #007bff;
             color: #fff;
             width: 40%;
-
         }
 
         .btn-sub {
             background-color: green;
             color: #fff;
             width: 40%;
-
         }
 
-        /* Style for .btn-del button */
         .btn-del {
             background-color: #dc3545;
             color: #fff;
             width: 20%;
-            /* Add any additional styles for the button as needed */
         }
 
         .btn-del-container {
@@ -176,11 +146,9 @@
         <main class="container">
             <hr>
             <section class="container-fluid">
-                <!-- OTA Title -->
                 <div class="ota-header">
-                    <a href="http://fastapi:8888/" class="ota-title">오늘의 테이블</a>
+                    <a href="http://{{ currentHost }}:8888/" class="ota-title">오늘의 테이블</a>
                 </div>
-                <!-- Add a horizontal line here -->
                 <div class="separator"></div>
             </section>
 
@@ -188,7 +156,6 @@
 
             {% if ota %}
             <section class="container-fluid ota-container">
-                <!-- OTA Content in Card Format -->
                 <div class="ota-card">
                     <div class="card-title-inside">{{ ota.title }}</div>
                     <div class="ota-item">
@@ -237,6 +204,8 @@
         // Call showCurrentDate function when the page is loaded
         window.onload = showCurrentDate;
 
+        const currentHost = window.location.origin;
+
         // Function to handle the "Delete Table" button click
         function deleteTable() {
             // Extract the ota_id from the current URL
@@ -245,13 +214,13 @@
             // Check if the extracted otaId is not empty
             if (otaId) {
                 // Send an HTTP DELETE request to the server
-                fetch(`http://fastapi:8888/otas/${otaId}/`, {
+                fetch(`${currentHost}/otas/${otaId}/`, { // Use the currentHost variable
                     method: 'DELETE',
                 })
                     .then((response) => {
                         // Check if the deletion is successful (status code 200)
                         if (response.ok) {
-                            window.location.href = `http://fastapi:8888/`;
+                            window.location.href = `${currentHost}/`; // Use the currentHost variable
                         } else if (response.status === 404) {
                             console.error('Resource not found:', response.status);
                         } else {
@@ -266,14 +235,12 @@
             }
         }
 
-
-
         function addCount() {
             // Extract the ota_id from the current URL
             const otaId = window.location.pathname.split('/').pop();
 
             // Send a GET request to the server
-            fetch(`http://fastapi:8888/otas/${otaId}/add/`, {
+            fetch(`${currentHost}/otas/${otaId}/add/`, { // Use the currentHost variable
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -294,13 +261,12 @@
                 });
         }
 
-        // Function to handle the "난 딴거!" button click
         function subCount() {
             // Extract the ota_id from the current URL
             const otaId = window.location.pathname.split('/').pop();
 
             // Send a GET request to the server
-            fetch(`http://fastapi:8888/otas/${otaId}/sub/`, {
+            fetch(`${currentHost}/otas/${otaId}/sub/`, { // Use the currentHost variable
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

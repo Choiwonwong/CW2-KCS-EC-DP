@@ -19,7 +19,8 @@ async def createPage(request: Request):
         "createOTA.html",
         {
             "request": request,
-            "otas": otas
+            "otas": otas,
+            "currentHost": request.headers.get('host')
         }
     )
 
@@ -31,7 +32,9 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
             "otaDetail.html",
             {
                 "request": request,
-                "ota": None
+                "ota": None,
+                "currentHost": request.headers.get('host')
+
             }
         )
     else:
@@ -39,7 +42,8 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
             "otaDetail.html",
             {
                 "request": request,
-                "ota": ota
+                "ota": ota,
+		"currentHost": request.headers.get('host')
             }
         )
 
@@ -47,11 +51,17 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
 async def add_otas(
     title: str = Form(...),
     authorName: str = Form(...),
-    storeName: str = Form(...)
+    storeName: str = Form(...),
+    request: Request  # Request 객체 추가
 ):
-     ota = OTA(title=title, authorName=authorName, storeName=storeName)
-     await ota_database.save(ota)
-     return RedirectResponse(url="http://fastapi:8888/")
+    ota = OTA(title=title, authorName=authorName, storeName=storeName)
+    await ota_database.save(ota)
+    
+    # 현재 요청의 호스트 정보 가져오기
+    current_host = request.headers.get('host')
+    redirect_url = f"http://{current_host}/"  # 현재 호스트의 IP로 리디렉션
+    
+    return RedirectResponse(url=redirect_url)
 
 @router.delete('/{ota_id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_ota(ota_id: PydanticObjectId):
@@ -69,8 +79,6 @@ async def add_count(ota_id: PydanticObjectId):
     await ota.save()
     return None
 
-
-
 @router.get('/{ota_id}/sub', status_code=status.HTTP_202_ACCEPTED)
 async def sub_count(ota_id: PydanticObjectId):
     ota = await ota_database.get(ota_id)
@@ -80,3 +88,4 @@ async def sub_count(ota_id: PydanticObjectId):
         ota.memberCount -= 1
         await ota.save()
     return None
+
