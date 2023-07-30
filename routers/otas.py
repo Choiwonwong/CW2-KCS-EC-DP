@@ -49,10 +49,10 @@ async def detailPage(ota_id: PydanticObjectId, request: Request):
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
 async def add_otas(
+    request: Request  # Request 객체 추가
     title: str = Form(...),
     authorName: str = Form(...),
     storeName: str = Form(...),
-    request: Request  # Request 객체 추가
 ):
     ota = OTA(title=title, authorName=authorName, storeName=storeName)
     await ota_database.save(ota)
