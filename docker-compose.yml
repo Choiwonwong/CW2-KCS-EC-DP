@@ -14,6 +14,7 @@ networks:
 
 services:
   mongodb:
+    container_name: mongodb_container  # 컨테이너 이름 지정
     image: mongo
     ports:
       - 27017:27017
@@ -36,6 +37,7 @@ services:
       - web_network
 
   fastapi:
+    container_name: fastapi_container  # 컨테이너 이름 지정
     image: 192.168.1.99:5000/web:latest
     ports:
       - "8888:8888"
@@ -59,3 +61,4 @@ volumes:
       type: nfs
       o: addr=192.168.1.99,vers=4.2
       device: ":/web/mongodb"
+
