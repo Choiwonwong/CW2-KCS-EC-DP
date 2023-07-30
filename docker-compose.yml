@@ -45,7 +45,6 @@ services:
       placement:
         constraints: [node.role == worker]
       mode: global
-      endpoint_mode: dnsrr
 
     networks:
       - web_network
