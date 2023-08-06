@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseSettings
 import os
 
+MONGODB_ROOT_USERNAME = open("/run/secrets/mongodb_root_username", "r").read().strip()
 MONGODB_ROOT_PASSWORD = open("/run/secrets/mongodb_root_password", "r").read().strip()
 
 class Settings(BaseSettings):
@@ -12,7 +13,7 @@ class Settings(BaseSettings):
     DATABASE_NAME: Optional[str] = "webdb"
 
     async def initialize_database(self):
-        self.DATABASE_URL = f"mongodb://root:{MONGODB_ROOT_PASSWORD}@mongodb:27017/?authSource=admin"
+	self.DATABASE_URL = f"mongodb://{MONGODB_ROOT_USERNAME}:{MONGODB_ROOT_PASSWORD}@mongodb:27017/?authSource=admin"
         client = AsyncIOMotorClient(self.DATABASE_URL)
         await init_beanie(database=client[self.DATABASE_NAME], document_models=[OTA])
 

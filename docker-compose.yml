@@ -42,6 +42,8 @@ services:
     environment:
       - DATABASE_URL=mongodb://dummy_url
     secrets:
+      - source: mongodb_root_username
+        target: /run/secrets/mongodb_root_username
       - source: mongodb_root_password
         target: /run/secrets/mongodb_root_password
     deploy:
