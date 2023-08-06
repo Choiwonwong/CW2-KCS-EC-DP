@@ -14,7 +14,6 @@ networks:
 
 services:
   mongodb:
-    container_name: mongodb_container  # 컨테이너 이름 지정
     image: mongo
     ports:
       - 27017:27017
@@ -37,7 +36,6 @@ services:
       - web_network
 
   web:
-    container_name: web_container  # 컨테이너 이름 지정
     image: 192.168.1.99:5000/web:latest
     ports:
       - "8888:8888"
